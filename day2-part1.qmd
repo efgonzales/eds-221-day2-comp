@@ -7,23 +7,137 @@ execute:
   message: false
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
 ```{r}
-1 + 1
+library(tidyverse)
 ```
 
-You can add options to executable code like this
+## Vectors
 
 ```{r}
-#| echo: false
-2 * 2
+#Create a vector
+dogs <- c("teddy", "khora", "waffle", "banjo", "tallie") #all same type of data
+
+#Check the class, or do this in the console
+class(dogs)
+
+cats <- c("creamsicle wolf", 14.2, 3L) #this will be a character vector (most flexible class type)
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+```{r}
+years <- c(20, 40, 16, 2)
+class(years)
+typeof(years)
+```
+
+```{r}
+#Do a conditional check
+# is. <<< this series asks questions "is this THIS?"
+# as. <<< this gives a command "make this THIS"
+
+is.numeric(years) #returns true in console
+is.character(years) #returns false in console
+```
+
+Create named elements
+
+```{r}
+dog_food <- c(teddy = "purina", khora = "alpo", waffle = "fancy feast") #a little clunky, more useful if in a data frame
+
+dog_food
+
+dog_food[2] #returns name & value of position 2 in vector... dangerous if position changes
+
+dog_food["khora"] 
+```
+
+```{r}
+cars <- c("blue", "orange", "white")
+cars[1]
+
+i <- seq(1:2)
+cars[i]
+
+#overwrite existing values -- "MUTABILITY"
+cars[3] <- "yellow"
+
+cars
+```
+
+## Matrices
+
+```{r}
+#Make vector, wrap it in a matrix. Populate it by col/rows
+fish_size <- matrix(c(12, 14, 18, 20), ncol = 2, nrow = 2, byrow = FALSE)
+fish_size
+
+class(fish_size) #use this most often
+typeof(fish_size)
+
+# Example indexing: [row, col]
+fish_size[1, 1]
+fish_size[2, 1]
+
+# What happens if we create a matrix with different types of data?
+fish_type <- matrix(c(12, "trout", 18, 13L), ncol = 2, nrow = 2, byrow = FALSE)
+
+class(fish_type)
+typeof(fish_type)
+
+fish_type
+fish_size[2,] #only looking at second row. **comma+blank = keep all columns
+fish_size[,1]
+
+```
+
+## Lists
+
+Reminder: A list combines vectors that can be of different length and type.
+
+```{r}
+urchins <- list("blue", c(1, 2, 3), c("a cat", "a dog", 5L))
+urchins
+
+urchins[[3]] #just vector contained in list element is returned
+
+```
+
+Make a named list
+
+```{r}
+tacos <- list(topping = c("onion", "cilantro", "guacamole"),
+              filling = c("beans", "meat", "veggies"),
+              price = c(6.75, 8.25, 9.50))
+tacos
+
+#Index list elements by name
+tacos$filling[2] #returns vector, and actual value with []
+
+
+```
+
+## Data Frames
+
+```{r}
+topping <- c("onion", "cilantro", "guacamole")
+filling <- c("beans", "meat", "veggies")
+price <- c(6.75, 8.25, 9.50)
+
+df_ex_1 <- data.frame(topping, filling, price)
+class(df_ex_1)
+
+df_ex_2 <- data.frame(topping = c("sour cream", "salsa", "cheese"),
+                      filling = c("chicken", "cheese", "cabbage"),
+                      price = c(12.50, 13.75, 15.00))
+
+#tibble: stronger fuctionality? than data frame. requires tidyverse(dplyr). Allows you to write it out in same organization as you'd expect to see output. 
+
+df_ex_3 <- tribble( # "~" = header of column
+  ~topping, ~filling, ~price,
+  "avocado", "steak", 13.25,
+  "radish", "fish", 10.40,
+  "salsa", "veggies", 9.75
+)
+
+class(df_ex_3)
+```
